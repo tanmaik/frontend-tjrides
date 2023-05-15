@@ -12,7 +12,6 @@ const HomeScreen = (props) => {
       console.log(code);
     }
   }, []);
-
   const auth = useContext(AuthContext);
   return (
     <div className="flex justify-center items-center h-screen">
