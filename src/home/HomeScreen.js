@@ -4,14 +4,11 @@ import { AuthContext } from "../shared/context/auth-context";
 import { useParams } from "react-router-dom";
 
 const HomeScreen = (props) => {
-  
-
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
 
     if (code) {
-      // Do something with the code
       console.log(code);
     }
   }, []);
