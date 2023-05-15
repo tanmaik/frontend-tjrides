@@ -20,10 +20,15 @@ const AuthScreen = (props) => {
     }
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
-    console.log(code);
     if (code) {
-      const data = fetchData(code);
-      console.log(data);
+      fetchData(code)
+        .then((data) => {
+          console.log(data.data);
+          auth.login(data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, []);
 

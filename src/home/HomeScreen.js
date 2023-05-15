@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import Button from "../shared/UI/Button";
 import { AuthContext } from "../shared/context/auth-context";
-import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const HomeScreen = (props) => {
   useEffect(() => {
@@ -16,11 +16,17 @@ const HomeScreen = (props) => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div>
-        <h2 className="font-bold text-xl pb-2">Welcome, {auth.userId}</h2>
+        <h2 className="font-bold text-xl pb-2">
+          Welcome, {auth.userData.first_name}
+        </h2>
         <h2 className="font-bold text-xl pb-2">Are you a...</h2>
         <div>
-          <Button>Rider?</Button>
-          <Button>Driver?</Button>
+          <Link to="/rider">
+            <Button>Rider?</Button>
+          </Link>
+          <Link to="/driver">
+            <Button>Driver?</Button>
+          </Link>
         </div>
         <button onClick={auth.logout} className="underline">
           Logout

@@ -12,16 +12,16 @@ import HomeScreen from "./home/HomeScreen";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState(null);
 
-  const login = useCallback((uid) => {
+  const login = useCallback((data) => {
     setIsLoggedIn(true);
-    setUserId(uid);
+    setUserData(data);
   }, []);
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
-    setUserId(null);
+    setUserData(null);
   }, []);
 
   let routes;
@@ -31,6 +31,12 @@ function App() {
         <Route path="/afterAuth"></Route>
         <Route path="/" exact>
           <HomeScreen />
+        </Route>
+        <Route path="/rider" exact>
+          <h1>Rider</h1>
+        </Route>
+        <Route path="/driver" exact>
+          <h1>Driver</h1>
         </Route>
         <Redirect to="/" />
       </Switch>
@@ -49,7 +55,7 @@ function App() {
     <AuthContext.Provider
       value={{
         isLoggedIn: isLoggedIn,
-        userId: userId,
+        userData: userData,
         login: login,
         logout: logout,
       }}
