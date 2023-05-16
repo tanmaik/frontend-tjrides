@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext } from "react";
+import React, { useState, useCallback } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -9,6 +9,9 @@ import { AuthContext } from "./shared/context/auth-context";
 
 import AuthScreen from "./auth/AuthScreen";
 import HomeScreen from "./home/HomeScreen";
+import RiderScreen from "./home/RiderScreen";
+import DriverScreen from "./home/DriverScreen";
+import ConfirmedRide from "./home/ConfirmedRide";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,10 +36,13 @@ function App() {
           <HomeScreen />
         </Route>
         <Route path="/rider" exact>
-          <h1>Rider</h1>
+          <RiderScreen />
         </Route>
         <Route path="/driver" exact>
-          <h1>Driver</h1>
+          <DriverScreen />
+        </Route>
+        <Route path="/confirmedRide">
+          <ConfirmedRide />
         </Route>
         <Redirect to="/" />
       </Switch>
@@ -60,9 +66,7 @@ function App() {
         logout: logout,
       }}
     >
-      <Router>
-        <main>{routes}</main>
-      </Router>
+      <Router>{routes}</Router>
     </AuthContext.Provider>
   );
 }
