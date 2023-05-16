@@ -35,8 +35,7 @@ const RiderScreen = () => {
 
   const handleRideSelect = (rideData) => {
     history.push({
-      pathname: "/confirmedRide",
-      state: { rideData },
+      pathname: `/confirmedRide/${rideData.id}`,
     });
   };
 

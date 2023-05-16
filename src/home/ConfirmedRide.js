@@ -1,15 +1,19 @@
 import React, { useEffect, useContext, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { AuthContext } from "../shared/context/auth-context";
 
+import GoogleMap from "google-map-react";
+
 const ConfirmedRide = (props) => {
+  const { rideId } = useParams();
   const auth = useContext(AuthContext);
-  const location = useLocation();
-  const [rideData, setRideData] = useState(location.state?.rideData);
+  const [lat, setLat] = useState(0); // [lat, lng]
+  const [lng, setLng] = useState(0); // [lat, lng]
+  const [rideData, setRideData] = useState(null);
   useEffect(() => {
     async function fetchData(name) {
       const response = await fetch(
-        `http://localhost:5000/api/rides/${rideData.id}`,
+        `http://localhost:5000/api/rides/${rideId}`,
         {
           method: "PATCH",
           headers: {
@@ -20,10 +24,30 @@ const ConfirmedRide = (props) => {
       );
       return await response.json();
     }
+    async function fetchLatLng(address) {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBYaOnnIFQpxGbz4kUSNE7cmjO5fvoz-y8`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return await response.json();
+    }
 
     fetchData(auth.userData.display_name)
       .then((data) => {
         setRideData(data.ride);
+        fetchLatLng(data.ride.address)
+          .then((data) => {
+            setLat(data.results[0].geometry.location.lat);
+            setLng(data.results[0].geometry.location.lng);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -36,16 +60,22 @@ const ConfirmedRide = (props) => {
       {rideData ? (
         <div>
           <p>Driver: {rideData.driver}</p>
+          <p>Address: {rideData.address}</p>
           <p>
-            Address: {rideData.address}, {rideData.location}
+            Time:{" "}
+            {new Date(rideData.time)
+              .toLocaleTimeString("en-US")
+              .replace(":00", "")}
           </p>
-          <p>Time: {rideData.time}</p>
           <p>Riders</p>
           <ul className="px-4">
             {rideData.riders.map((rider) => (
               <li key={Math.random()}>• {rider}</li>
             ))}
           </ul>
+          <div className="h-24 w-full">
+            <GoogleMap center={[lat, lng]} zoom={11}></GoogleMap>
+          </div>
         </div>
       ) : (
         <p>No ride data available.</p>

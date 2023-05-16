@@ -41,7 +41,7 @@ function App() {
         <Route path="/driver" exact>
           <DriverScreen />
         </Route>
-        <Route path="/confirmedRide">
+        <Route path="/confirmedRide/:rideId">
           <ConfirmedRide />
         </Route>
         <Redirect to="/" />
