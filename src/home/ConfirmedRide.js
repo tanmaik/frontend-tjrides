@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../shared/context/auth-context";
+import { MapPinIcon } from "@heroicons/react/24/solid";
 
 import GoogleMap from "google-map-react";
 
@@ -28,9 +29,10 @@ const ConfirmedRide = (props) => {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBYaOnnIFQpxGbz4kUSNE7cmjO5fvoz-y8`,
         {
+          mode: "cors",
           method: "GET",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
           },
         }
       );
@@ -62,7 +64,7 @@ const ConfirmedRide = (props) => {
           <p>Driver: {rideData.driver}</p>
           <p>Address: {rideData.address}</p>
           <p>
-            Time:{" "}
+            Time:
             {new Date(rideData.time)
               .toLocaleTimeString("en-US")
               .replace(":00", "")}
@@ -74,7 +76,7 @@ const ConfirmedRide = (props) => {
             ))}
           </ul>
           <div className="h-24 w-full">
-            <GoogleMap center={[lat, lng]} zoom={11}></GoogleMap>
+            <GoogleMap center={[lat, lng]} zoom={14}></GoogleMap>
           </div>
         </div>
       ) : (
